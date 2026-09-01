@@ -58,6 +58,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
 
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "corsheaders.middleware.CorsMiddleware",
 
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -140,6 +142,13 @@ DATABASES = {
     }
 }
 
+_db_ssl_mode = os.getenv("DB_SSL_MODE", "DISABLED").upper()
+
+if _db_ssl_mode == "REQUIRED":
+    DATABASES["default"]["OPTIONS"]["ssl"] = {"require": True}
+elif _db_ssl_mode == "PREFERRED":
+    DATABASES["default"]["OPTIONS"]["ssl"] = {"require": False}
+
 
 AUTH_USER_MODEL = "accounts.User"
 
@@ -185,6 +194,14 @@ STATIC_URL = "static/"
 STATIC_ROOT = (
     BASE_DIR / "staticfiles"
 )
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND":
+            "whitenoise.storage."
+            "CompressedManifestStaticFilesStorage",
+    },
+}
 
 
 CSRF_TRUSTED_ORIGINS = [
