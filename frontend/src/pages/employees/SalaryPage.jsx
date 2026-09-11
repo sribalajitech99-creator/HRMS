@@ -1,5 +1,11 @@
 import CrudPage from "../../components/common/CrudPage";
 
+const NUMBER_FIELD = {
+  type: "number",
+  step: "0.01",
+  defaultValue: 0,
+};
+
 export default function SalaryPage() {
   return (
     <CrudPage
@@ -16,12 +22,20 @@ export default function SalaryPage() {
           label: "Basic",
         },
         {
-          key: "hra",
-          label: "HRA",
+          key: "dearness_allowance",
+          label: "DA",
         },
         {
-          key: "allowance",
-          label: "Allowance",
+          key: "special_allowance",
+          label: "Special",
+        },
+        {
+          key: "bonus",
+          label: "Bonus",
+        },
+        {
+          key: "deductions",
+          label: "Deductions",
         },
         {
           key: "effective_from",
@@ -48,18 +62,64 @@ export default function SalaryPage() {
           required: true,
         },
         {
-          name: "hra",
-          label: "HRA",
-          type: "number",
-          step: "0.01",
-          defaultValue: 0,
+          name: "dearness_allowance",
+          label: "Dearness Allowance",
+          ...NUMBER_FIELD,
         },
         {
-          name: "allowance",
-          label: "Allowance",
-          type: "number",
-          step: "0.01",
-          defaultValue: 0,
+          name: "conveyance_allowance",
+          label: "Conveyance Allowance",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "medical_allowance",
+          label: "Medical Allowance",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "special_allowance",
+          label: "Special Allowance",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "other_allowance",
+          label: "Other Allowance",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "bonus",
+          label: "Bonus",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "pf",
+          label: "PF Deductions",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "esi",
+          label: "ESI",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "professional_tax",
+          label: "Professional Tax",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "tds",
+          label: "TDS",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "other_deduction",
+          label: "Other Deduction",
+          ...NUMBER_FIELD,
+        },
+        {
+          name: "deductions",
+          label: "Advance / Other",
+          ...NUMBER_FIELD,
         },
         {
           name: "effective_from",

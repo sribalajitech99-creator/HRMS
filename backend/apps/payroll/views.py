@@ -3,6 +3,7 @@ from django.db import IntegrityError, transaction
 from rest_framework import filters, status
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import BasePermission
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -28,8 +29,10 @@ from .serializers import (
 
 from .services import calculate_payroll_run
 
+from .pdf import payslip_pdf_response, bulk_payslip_zip_response
 
-class PayrollAccess:
+
+class PayrollAccess(BasePermission):
     """Employees may read their own payslips; payroll people manage."""
 
     staff_roles = {
@@ -264,6 +267,31 @@ class PayrollRunViewSet(
                 "and period already exists."
             )
 
+    def _finalized(self, payroll):
+        return payroll.status in [
+            PayrollRun.Status.APPROVED,
+            PayrollRun.Status.PAID,
+        ]
+
+    def perform_update(self, serializer):
+        payroll = self.get_object()
+
+        if self._finalized(payroll):
+            raise PermissionDenied(
+                "An approved or paid payroll "
+                "cannot be modified."
+            )
+
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        if instance.status == PayrollRun.Status.PAID:
+            raise PermissionDenied(
+                "A paid payroll cannot be deleted."
+            )
+
+        instance.delete()
+
     @action(
         detail=True,
         methods=["post"]
@@ -405,6 +433,7 @@ class PayslipViewSet(
 
     http_method_names = [
         "get",
+        "post",
         "head",
         "options",
     ]
@@ -442,3 +471,85 @@ class PayslipViewSet(
             )
 
         return queryset
+
+    @action(
+        detail=True,
+        methods=["get"],
+    )
+    def pdf(self, request, pk=None):
+        payslip = self.get_object()
+
+        user = request.user
+
+        mask_bank = not (
+            user.is_superuser
+            or user.role in PayrollAccess.staff_roles
+        )
+
+        return payslip_pdf_response(
+            payslip,
+            mask_bank=mask_bank,
+        )
+
+    @action(
+        detail=False,
+        methods=["post"],
+        url_path="bulk-pdf",
+    )
+    def bulk_pdf(self, request):
+        user = request.user
+
+        mask_bank = not (
+            user.is_superuser
+            or user.role in PayrollAccess.staff_roles
+        )
+
+        payroll_run_id = request.data.get("payroll_run")
+        payslip_ids = request.data.get("payslip_ids")
+
+        queryset = self.get_queryset()
+
+        if payslip_ids:
+            if not isinstance(payslip_ids, list):
+                return Response(
+                    {
+                        "success": False,
+                        "message": "payslip_ids must be a list.",
+                    },
+                    status=400,
+                )
+
+            queryset = queryset.filter(
+                pk__in=payslip_ids,
+            )
+        elif payroll_run_id:
+            queryset = queryset.filter(
+                payroll_run_id=payroll_run_id,
+            )
+
+        payslips = list(queryset)
+
+        if not payslips:
+            return Response(
+                {
+                    "success": False,
+                    "message": "No payslips found.",
+                },
+                status=404,
+            )
+
+        response = bulk_payslip_zip_response(
+            payslips,
+            mask_bank=mask_bank,
+        )
+
+        if response is None:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Failed to generate PDF.",
+                },
+                status=500,
+            )
+
+        return response

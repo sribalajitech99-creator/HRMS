@@ -50,6 +50,26 @@ class Company(models.Model):
         default="EMP"
     )
 
+    logo = models.ImageField(
+        upload_to="company_logos/",
+        blank=True,
+        null=True
+    )
+
+    gst_number = models.CharField(
+        max_length=30,
+        blank=True
+    )
+
+    cin_number = models.CharField(
+        max_length=30,
+        blank=True
+    )
+
+    website = models.URLField(
+        blank=True
+    )
+
     currency = models.CharField(
         max_length=10,
         default="INR"

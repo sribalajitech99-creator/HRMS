@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 from apps.companies.models import (
     Company,
@@ -103,6 +104,16 @@ class Employee(models.Model):
     joining_date = models.DateField()
 
 
+    exit_date = models.DateField(
+        null=True,
+        blank=True,
+        help_text=(
+            "Date the employee left. Auto-set when status "
+            "changes to Inactive or Exited."
+        ),
+    )
+
+
     employment_type = models.CharField(
         max_length=50,
         default="Permanent"
@@ -171,4 +182,21 @@ class Employee(models.Model):
         return (
             f"{self.employee_code} - "
             f"{self.first_name}"
+        )
+
+
+    def save(
+        self,
+        *args,
+        **kwargs,
+    ):
+        if self.status in [
+            self.Status.INACTIVE,
+            self.Status.EXITED,
+        ] and not self.exit_date:
+            self.exit_date = timezone.localdate()
+
+        super().save(
+            *args,
+            **kwargs,
         )

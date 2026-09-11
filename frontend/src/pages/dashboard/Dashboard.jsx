@@ -405,7 +405,7 @@ export default function Dashboard() {
 
             <div>
               <span>
-                Deductions
+                PF Deductions
               </span>
 
               <strong>

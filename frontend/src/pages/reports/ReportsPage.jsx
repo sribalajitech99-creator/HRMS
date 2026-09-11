@@ -240,16 +240,16 @@ const CATEGORIES = {
       },
       {
         key: "payroll_deductions",
-        label: "Deduction Report",
+        label: "PF Deduction Report",
         description:
-          "Deductions per employee for a month.",
+          "PF deductions per employee for a month.",
         filters: ["year", "month", "company"],
       },
       {
         key: "payroll_net_salary",
         label: "Net Salary Report",
         description:
-          "Gross, OT, deductions and net for a month.",
+          "Gross, OT, PF deductions and net for a month.",
         filters: ["year", "month", "company"],
       },
       {

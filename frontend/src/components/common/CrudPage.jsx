@@ -7,6 +7,7 @@ import {
 } from "react";
 
 import {
+  useNavigate,
   useSearchParams,
 } from "react-router-dom";
 
@@ -141,12 +142,16 @@ export default function CrudPage({
   allowEdit = true,
   allowDelete = true,
   rowActions = EMPTY_ROW_ACTIONS,
+  headerActions,
 }) {
 
   const [
     searchParams,
     setSearchParams,
   ] = useSearchParams();
+
+  const navigate =
+    useNavigate();
 
   const [rows, setRows] =
     useState([]);
@@ -871,6 +876,91 @@ export default function CrudPage({
     ) => {
 
       if (
+        action.navigate
+      ) {
+
+        navigate(
+          action.navigate(
+            row
+          )
+        );
+
+        return;
+      }
+
+      if (
+        action.download
+      ) {
+
+        try {
+
+          const response =
+            await api.get(
+              action.download(
+                row
+              ),
+              {
+                responseType:
+                  "blob",
+              }
+            );
+
+          const blob =
+            new Blob(
+              [response.data]
+            );
+
+          const url =
+            URL.createObjectURL(
+              blob
+            );
+
+          const link =
+            document.createElement(
+              "a"
+            );
+
+          link.href = url;
+
+          link.download =
+            action.fileName
+              ? action.fileName(
+                  row
+                )
+              : "download";
+
+          document.body.appendChild(
+            link
+          );
+
+          link.click();
+
+          link.remove();
+
+          setTimeout(
+            () =>
+              URL.revokeObjectURL(
+                url
+              ),
+            1000
+          );
+
+        } catch (
+          error
+        ) {
+
+          setError(
+            error.response
+              ?.data?.detail ||
+            `Unable to download ${action.label}.`
+          );
+
+        }
+
+        return;
+      }
+
+      if (
         action.confirm &&
         !window.confirm(
           action.confirm
@@ -1206,6 +1296,8 @@ export default function CrudPage({
 
             )}
 
+          {headerActions}
+
         </div>
 
       </div>
@@ -1411,7 +1503,15 @@ export default function CrudPage({
 
                           <div className="crud-row-actions">
 
-                            {rowActions.map(
+                            {rowActions
+                              .filter(
+                                (action) =>
+                                  !action.hidden ||
+                                  !action.hidden(
+                                    row
+                                  )
+                              )
+                              .map(
                               (
                                 action
                               ) => (

@@ -47,6 +47,11 @@ export default function EmployeesPage() {
           render: (row) => row.joining_date || "-",
         },
         {
+          key: "exit_date",
+          label: "Exit Date",
+          render: (row) => row.exit_date || "-",
+        },
+        {
           key: "status",
           label: "Status",
           render: (row) => {
@@ -169,6 +174,13 @@ export default function EmployeesPage() {
           label: "Joining Date",
           type: "date",
           required: true,
+        },
+
+        {
+          name: "exit_date",
+          label: "Exit Date",
+          type: "date",
+          nullable: true,
         },
 
         {

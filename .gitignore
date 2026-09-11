@@ -1,0 +1,51 @@
+# Root project
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+
+# Django
+backend/.env
+backend/.env.*
+!backend/.env.example
+backend/staticfiles/
+backend/media/
+backend/*.sqlite3
+
+# Frontend
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+frontend/node_modules/
+frontend/dist/
+
+# Databases
+*.sql
+*.dump
+*.sqlite3
+*.bak
+mysql_dump.sql
+
+# Vercel / logs
+.vercel/
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Accidental empty files
+npm
+where
+wsl
+

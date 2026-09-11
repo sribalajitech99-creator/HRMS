@@ -3,6 +3,7 @@ from datetime import date
 
 from django.db.models import Count, Q, Sum
 
+from apps.accounts.permissions import visible_company_ids
 from apps.attendance.models import Attendance
 from apps.companies.models import Company
 from apps.employees.models import Employee
@@ -1156,8 +1157,7 @@ def payroll_monthly_salary_register(params, user):
             slip.payroll_run.company.code,
             slip.employee.department.name if slip.employee.department else "",
             _money_str(slip.basic_salary),
-            _money_str(slip.hra),
-            _money_str(slip.allowance),
+            _money_str(slip.bonus),
             _money_str(slip.gross_salary),
             _money_str(slip.ot_hours),
             _money_str(slip.overtime_amount),
@@ -1181,21 +1181,20 @@ def payroll_monthly_salary_register(params, user):
             "Company",
             "Department",
             "Basic",
-            "HRA",
-            "Allowance",
+            "Bonus",
             "Gross",
             "OT Hours",
             "OT Amount",
-            "Deductions",
+            "PF Deductions",
             "Net Salary",
         ],
         "rows": rows,
         "totals": {
             "gross": _money_str(
-                sum(float(r[7]) for r in rows)
+                sum(float(r[6]) for r in rows)
             ),
             "net": _money_str(
-                sum(float(r[11]) for r in rows)
+                sum(float(r[10]) for r in rows)
             ),
         },
     }
@@ -1246,7 +1245,7 @@ def _payroll_aggregate(params, user, group_by):
             "Company",
             "Gross",
             "OT Amount",
-            "Deductions",
+            "PF Deductions",
             "Net",
         ]
     else:
@@ -1267,7 +1266,7 @@ def _payroll_aggregate(params, user, group_by):
             "Department",
             "Gross",
             "OT Amount",
-            "Deductions",
+            "PF Deductions",
             "Net",
         ]
 
@@ -1305,8 +1304,7 @@ def payroll_earnings(params, user):
             _fmt_name(slip.employee),
             slip.payroll_run.company.code,
             _money_str(slip.basic_salary),
-            _money_str(slip.hra),
-            _money_str(slip.allowance),
+            _money_str(slip.bonus),
             _money_str(slip.overtime_amount),
             _money_str(slip.gross_salary + slip.overtime_amount),
         ]
@@ -1323,15 +1321,14 @@ def payroll_earnings(params, user):
             "Name",
             "Company",
             "Basic",
-            "HRA",
-            "Allowance",
+            "Bonus",
             "OT Amount",
             "Total Earnings",
         ],
         "rows": rows,
         "totals": {
             "earnings": _money_str(
-                sum(float(r[7]) for r in rows)
+                sum(float(r[6]) for r in rows)
             ),
         },
     }
@@ -1353,13 +1350,13 @@ def payroll_deductions(params, user):
     ]
 
     return {
-        "title": "Deduction Report",
+        "title": "PF Deduction Report",
         "period": period,
         "columns": [
             "Employee Code",
             "Name",
             "Company",
-            "Deductions",
+            "PF Deductions",
         ],
         "rows": rows,
         "totals": {
@@ -1402,7 +1399,7 @@ def payroll_net_salary(params, user):
             "Company Name",
             "Gross",
             "OT Amount",
-            "Deductions",
+            "PF Deductions",
             "Net Salary",
         ],
         "rows": rows,
@@ -1422,10 +1419,13 @@ def payroll_payslip_register(params, user):
             slip.id,
             slip.employee.employee_code,
             _fmt_name(slip.employee),
-            slip.payroll_run.company.code,
             _money_str(slip.basic_salary),
-            _money_str(slip.gross_salary),
+            _money_str(slip.bonus),
             _money_str(slip.overtime_amount),
+            _money_str(
+                slip.gross_salary
+                + slip.overtime_amount
+            ),
             _money_str(slip.deductions),
             _money_str(slip.net_salary),
             slip.payroll_run.get_status_display(),
@@ -1442,11 +1442,11 @@ def payroll_payslip_register(params, user):
             "Payslip #",
             "Employee Code",
             "Name",
-            "Company",
             "Basic",
-            "Gross",
+            "Bonus",
             "OT Amount",
-            "Deductions",
+            "Gross",
+            "PF Deductions",
             "Net",
             "Payroll Status",
         ],

@@ -755,6 +755,13 @@ export default function AttendancePage() {
         isFirstHalf ||
         isSecondHalf
       ) {
+        next.status = "HALF_DAY";
+      }
+
+      if (
+        isFirstHalf ||
+        isSecondHalf
+      ) {
         const shift =
           findShift(
             current.shift

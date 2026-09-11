@@ -24,6 +24,7 @@ import LeavePage from "../pages/employees/LeavePage";
 import PayrollPage from "../pages/employees/PayrollPage";
 import SalaryPage from "../pages/employees/SalaryPage";
 import PayslipsPage from "../pages/employees/PayslipsPage";
+import PayslipDocumentPage from "../pages/employees/PayslipDocumentPage";
 import RecruitmentPage from "../pages/employees/RecruitmentPage";
 import AssetsPage from "../pages/employees/AssetsPage";
 
@@ -123,6 +124,11 @@ export default function AppRoutes() {
         <Route
           path="/payroll/payslips"
           element={<PayslipsPage />}
+        />
+
+        <Route
+          path="/payroll/payslips/:id"
+          element={<PayslipDocumentPage />}
         />
 
         {/* RECRUITMENT */}

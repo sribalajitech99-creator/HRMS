@@ -9,6 +9,7 @@ from apps.employees.models import Employee
 from .services import (
     early_exit_minutes,
     effective_working_hours,
+    full_day_hours,
     is_overnight_shift,
     late_minutes,
     overtime_hours,
@@ -592,7 +593,23 @@ class Attendance(models.Model):
         ):
             self.check_out_next_day = True
 
+        if self.attendance_type in [
+            self.AttendanceType.HALF_DAY_FIRST_HALF,
+            self.AttendanceType.HALF_DAY_SECOND_HALF,
+        ]:
+            self.status = self.Status.HALF_DAY
+
         self.calculate_hours()
+
+        if (
+            self.status == self.Status.PRESENT
+            and self.date.weekday() == 6
+        ):
+            self.calculated_ot_hours = max(
+                self.calculated_ot_hours,
+                full_day_hours(self.shift)
+                or Decimal("8.00"),
+            )
 
         self.worked_on_holiday = (
             bool(self.holiday_id)

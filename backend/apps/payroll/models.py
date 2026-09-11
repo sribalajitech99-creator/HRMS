@@ -21,19 +21,77 @@ class EmployeeSalary(models.Model):
         decimal_places=2
     )
 
-    hra = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        default=0
-    )
-
-    allowance = models.DecimalField(
+    bonus = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         default=0
     )
 
     deductions = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        help_text=(
+            "Legacy aggregate deduction (treated as an "
+            "advance/other deduction in payroll)."
+        )
+    )
+
+    dearness_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    conveyance_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    medical_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    special_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    other_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    pf = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    esi = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    professional_tax = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    tds = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    other_deduction = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         default=0
@@ -78,6 +136,14 @@ class PayrollRun(models.Model):
     year = models.PositiveIntegerField()
 
     month = models.PositiveIntegerField()
+
+    pay_date = models.DateField(
+        null=True,
+        blank=True,
+        help_text=(
+            "Date on which salaries are paid."
+        )
+    )
 
     working_days = models.DecimalField(
         max_digits=5,
@@ -143,13 +209,94 @@ class Payslip(models.Model):
         default=0
     )
 
+    bonus = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
     hra = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         default=0
     )
 
-    allowance = models.DecimalField(
+    dearness_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    total_monthly = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        help_text="Basic + DA, full month amount.",
+    )
+
+    per_day_rate = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0,
+        help_text="Total monthly / working days.",
+    )
+
+    no_of_days = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0,
+        help_text="Present days used for pro-rata.",
+    )
+
+    conveyance_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    medical_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    special_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    other_allowance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    pf = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    esi = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    professional_tax = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    tds = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    other_deduction = models.DecimalField(
         max_digits=12,
         decimal_places=2,
         default=0
@@ -158,6 +305,10 @@ class Payslip(models.Model):
     working_days = models.DecimalField(
         max_digits=5,
         decimal_places=2,
+        default=0
+    )
+
+    calendar_days = models.PositiveIntegerField(
         default=0
     )
 
@@ -179,15 +330,70 @@ class Payslip(models.Model):
         default=0
     )
 
+    paid_leave_days = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0
+    )
+
+    unpaid_leave_days = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0
+    )
+
+    half_days = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0
+    )
+
+    holidays = models.PositiveIntegerField(
+        default=0
+    )
+
+    week_offs = models.PositiveIntegerField(
+        default=0
+    )
+
     ot_hours = models.DecimalField(
         max_digits=7,
         decimal_places=2,
         default=0
     )
 
+    ot_rate = models.DecimalField(
+        max_digits=9,
+        decimal_places=2,
+        default=0,
+        help_text=(
+            "OT rate per hour applied for this period. "
+            "0 means the derived fallback rate was used."
+        )
+    )
+
+    lop_days = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=0,
+        help_text=(
+            "Days without pay (unpaid leave + unauthorised absence)."
+        )
+    )
+
+    lop_deduction = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
     gross_salary = models.DecimalField(
         max_digits=12,
-        decimal_places=2
+        decimal_places=2,
+        help_text=(
+            "Total earnings excluding OT "
+            "(basic + bonus + allowances)."
+        )
     )
 
     overtime_amount = models.DecimalField(
@@ -214,6 +420,16 @@ class Payslip(models.Model):
     class Meta:
         ordering = [
             "employee__employee_code",
+        ]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "payroll_run",
+                    "employee",
+                ],
+                name="unique_payslip_run_employee"
+            )
         ]
 
     def __str__(self):
