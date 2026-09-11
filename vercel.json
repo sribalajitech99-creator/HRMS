@@ -1,0 +1,28 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "backend": {
+      "root": "backend",
+      "entrypoint": "config.wsgi:application",
+      "functions": {
+        "config/wsgi.py": {
+          "maxDuration": 60
+        }
+      }
+    },
+    "frontend": {
+      "root": "frontend",
+      "framework": "vite",
+      "outputDirectory": "dist",
+      "rewrites": [
+        { "source": "/(.*)", "destination": "/index.html" }
+      ]
+    }
+  },
+  "rewrites": [
+    { "source": "/api(/.*)?", "destination": { "service": "backend" } },
+    { "source": "/admin(/.*)?", "destination": { "service": "backend" } },
+    { "source": "/static(/.*)?", "destination": { "service": "backend" } },
+    { "source": "/(.*)", "destination": { "service": "frontend" } }
+  ]
+}

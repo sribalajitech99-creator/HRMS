@@ -6,11 +6,29 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+vite-debug.log*
+
+# Local env files
+.env
+.env.*
+!.env.example
+.env.local
 
 node_modules
 dist
 dist-ssr
 *.local
+
+# Vercel
+.vercel/
+
+# Python (in case backend code is opened from this dir)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+staticfiles/
+media/
 
 # Editor directories and files
 .vscode/*

@@ -16,15 +16,24 @@ def parse_env_list(value, default):
     return [item.strip() for item in str(value).split(",") if item.strip()]
 
 
-def env_truthy(name, default="false"):
-    return str(os.getenv(name, default)).strip().lower() in {"1", "true", "yes", "on"}
+def env_bool(name, fallback_name=None, default="false"):
+    raw = os.getenv(name)
+    if raw is None and fallback_name is not None:
+        raw = os.getenv(fallback_name)
+    if raw is None:
+        raw = default
+    return str(raw).strip().lower() in {"1", "true", "yes", "on"}
 
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", os.getenv("SECRET_KEY", "django-insecure-development-key"))
-DEBUG = env_truthy("DJANGO_DEBUG", "True" if not os.getenv("DATABASE_URL") else "False")
+SECRET_KEY = (
+    os.getenv("SECRET_KEY")
+    or os.getenv("DJANGO_SECRET_KEY")
+    or "django-insecure-development-key"
+)
+DEBUG = env_bool("DEBUG", "DJANGO_DEBUG", "True" if not os.getenv("DATABASE_URL") else "False")
 
 ALLOWED_HOSTS = parse_env_list(
-    os.getenv("DJANGO_ALLOWED_HOSTS"),
+    os.getenv("ALLOWED_HOSTS") or os.getenv("DJANGO_ALLOWED_HOSTS"),
     "localhost,127.0.0.1,.vercel.app",
 )
 
@@ -198,11 +207,3 @@ CLOUDINARY_STORAGE = {
     "SECURE": True,
     "INVALID_VIDEO_ERROR_MESSAGE": "Invalid video file.",
 }
-
-CSRF_TRUSTED_ORIGINS = [
-    value.strip() for value in os.getenv("CSRF_TRUSTED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if value.strip()
-]
-
-CORS_ALLOWED_ORIGINS = [
-    value.strip() for value in os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if value.strip()
-]

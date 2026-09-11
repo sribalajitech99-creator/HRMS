@@ -1,0 +1,16 @@
+# Keep the Python function bundle small: exclude files not needed at runtime.
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+media/
+staticfiles/
+*.sqlite3
+**/tests/
+**/test_*.py
+**/*.test.py
+fixtures/
+__fixtures__/
+node_modules/
+dist/
+*.xlsx
