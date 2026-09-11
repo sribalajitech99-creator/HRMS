@@ -32,7 +32,6 @@ frontend/dist/
 *.dump
 *.sqlite3
 *.bak
-mysql_dump.sql
 
 # Vercel / logs
 .vercel/
