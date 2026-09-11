@@ -5,10 +5,8 @@ __pycache__/
 .venv/
 venv/
 
-# Environment - never commit real secrets
+# Environment
 .env
-.env.*
-!.env.example
 
 # Django
 staticfiles/

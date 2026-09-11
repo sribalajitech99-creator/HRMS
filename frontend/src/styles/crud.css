@@ -1,0 +1,687 @@
+/* =========================================================
+   HRMS PREMIUM CRUD / EMPLOYEE PAGE
+========================================================= */
+
+.crud-page {
+  width: 100%;
+  padding: 0;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.crud-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.crud-page-header-content {
+  flex: 1;
+}
+
+.crud-page-title,
+.page-title {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #102820;
+  letter-spacing: -0.5px;
+}
+
+.crud-page-description,
+.page-description {
+  margin-top: 7px;
+  margin-bottom: 0;
+  font-size: 15px;
+  color: #65756f;
+}
+
+
+/* =========================================================
+   TOP ACTIONS
+========================================================= */
+
+.crud-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.crud-add-btn,
+.crud-refresh-btn {
+  height: 40px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.crud-add-btn {
+  border: 1px solid #147457;
+  background: #147457;
+  color: #ffffff;
+  padding: 0 16px;
+}
+
+.crud-add-btn:hover {
+  background: #0f6047;
+  border-color: #0f6047;
+}
+
+.crud-refresh-btn {
+  border: 1px solid #cbd8d3;
+  background: #ffffff;
+  color: #51635c;
+  padding: 0 14px;
+}
+
+.crud-refresh-btn:hover {
+  color: #147457;
+  border-color: #147457;
+  background: #f4faf7;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.crud-card,
+.hrms-card {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #dce5e1;
+  border-radius: 12px;
+  box-shadow: 0 2px 7px rgba(25, 56, 46, 0.05);
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.crud-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e6ece9;
+  background: #ffffff;
+}
+
+.crud-toolbar-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.crud-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.crud-search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+}
+
+.crud-search-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #74867f;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.crud-search {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px 0 40px;
+  border: 1px solid #d4dfda;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #21382f;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.crud-search::placeholder {
+  color: #94a29d;
+}
+
+.crud-search:focus {
+  border-color: #16815f;
+  box-shadow: 0 0 0 3px rgba(22, 129, 95, 0.1);
+}
+
+
+/* =========================================================
+   RECORD COUNT
+========================================================= */
+
+.crud-record-count,
+.crud-count {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #70817a;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.crud-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.crud-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.crud-table thead {
+  background: #f7faf8;
+}
+
+.crud-table th {
+  padding: 14px 16px;
+  border-bottom: 1px solid #dde6e2;
+  text-align: left;
+  vertical-align: middle;
+
+  font-size: 12px;
+  font-weight: 700;
+  color: #52665e;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.crud-table td {
+  padding: 15px 16px;
+  border-bottom: 1px solid #edf1ef;
+  vertical-align: middle;
+
+  font-size: 14px;
+  color: #22382f;
+}
+
+.crud-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.crud-table tbody tr:hover {
+  background: #f8fbf9;
+}
+
+.crud-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* Employee ID */
+.crud-table th:nth-child(1),
+.crud-table td:nth-child(1) {
+  min-width: 130px;
+}
+
+/* Employee */
+.crud-table th:nth-child(2),
+.crud-table td:nth-child(2) {
+  min-width: 170px;
+}
+
+/* Company */
+.crud-table th:nth-child(3),
+.crud-table td:nth-child(3) {
+  min-width: 150px;
+}
+
+/* Department */
+.crud-table th:nth-child(4),
+.crud-table td:nth-child(4) {
+  min-width: 150px;
+}
+
+/* Designation */
+.crud-table th:nth-child(5),
+.crud-table td:nth-child(5) {
+  min-width: 160px;
+}
+
+/* Mobile */
+.crud-table th:nth-child(6),
+.crud-table td:nth-child(6) {
+  min-width: 120px;
+}
+
+/* Joined */
+.crud-table th:nth-child(7),
+.crud-table td:nth-child(7) {
+  min-width: 110px;
+}
+
+/* Status */
+.crud-table th:nth-child(8),
+.crud-table td:nth-child(8) {
+  min-width: 110px;
+}
+
+/* Actions */
+.crud-table th:last-child,
+.crud-table td:last-child {
+  min-width: 110px;
+  text-align: center;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.crud-empty {
+  padding: 45px 20px !important;
+  text-align: center;
+  font-size: 14px;
+  color: #7a8984;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.crud-table .badge {
+  min-width: 72px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   ROW ACTION BUTTONS
+========================================================= */
+
+.crud-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.crud-icon-btn {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dae3df;
+  border-radius: 7px;
+
+  background: #ffffff;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.crud-edit-btn {
+  color: #147457;
+}
+
+.crud-edit-btn:hover {
+  background: #eaf7f2;
+  border-color: #abd8c8;
+}
+
+.crud-delete-btn {
+  color: #c13d3d;
+}
+
+.crud-delete-btn:hover {
+  background: #fff0f0;
+  border-color: #efc1c1;
+}
+
+
+/* =========================================================
+   MODAL BACKDROP
+========================================================= */
+
+.crud-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 25px;
+
+  background: rgba(9, 27, 21, 0.55);
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.crud-modal {
+  width: 100%;
+  max-width: 760px;
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  background: #ffffff;
+  border-radius: 14px;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.22);
+}
+
+.crud-modal-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 24px;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e3ebe7;
+}
+
+.crud-modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #172d25;
+}
+
+.crud-modal-close {
+  width: 36px;
+  height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #f1f5f3;
+  color: #53655e;
+
+  cursor: pointer;
+}
+
+.crud-modal-close:hover {
+  background: #e5ece9;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.crud-form {
+  padding: 24px;
+}
+
+.crud-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.crud-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.crud-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.crud-form-label {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #344a42;
+}
+
+.crud-required {
+  color: #d63c3c;
+}
+
+.crud-form-control {
+  width: 100%;
+  min-height: 42px;
+
+  padding: 9px 12px;
+
+  border: 1px solid #d4dfda;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #21372f;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition: all 0.2s ease;
+}
+
+.crud-form-control:focus {
+  border-color: #16815f;
+  box-shadow: 0 0 0 3px rgba(22, 129, 95, 0.1);
+}
+
+textarea.crud-form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+
+/* =========================================================
+   CHECKBOX
+========================================================= */
+
+.crud-checkbox-wrapper {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crud-checkbox {
+  width: 17px;
+  height: 17px;
+  accent-color: #147457;
+}
+
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+.crud-modal-footer {
+  position: sticky;
+  bottom: 0;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 17px 24px;
+
+  border-top: 1px solid #e3ebe7;
+  background: #ffffff;
+}
+
+.crud-cancel-btn,
+.crud-save-btn {
+  height: 40px;
+  padding: 0 18px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.crud-cancel-btn {
+  border: 1px solid #d1dcd7;
+  background: #ffffff;
+  color: #4d6058;
+}
+
+.crud-cancel-btn:hover {
+  background: #f5f8f7;
+}
+
+.crud-save-btn {
+  border: 1px solid #147457;
+  background: #147457;
+  color: #ffffff;
+}
+
+.crud-save-btn:hover {
+  background: #0e6046;
+}
+
+.crud-save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.crud-error {
+  margin: 15px 20px;
+  padding: 11px 14px;
+
+  background: #fff3f3;
+  border: 1px solid #f0c8c8;
+  border-radius: 8px;
+
+  color: #a52e2e;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.crud-footer {
+  min-height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 12px 20px;
+
+  background: #ffffff;
+  border-top: 1px solid #e6ece9;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 992px) {
+
+  .crud-table {
+    min-width: 1000px;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .crud-page-header {
+    flex-direction: column;
+  }
+
+  .crud-actions {
+    width: 100%;
+  }
+
+  .crud-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .crud-search-wrapper {
+    max-width: 100%;
+  }
+
+  .crud-toolbar-right {
+    justify-content: flex-end;
+  }
+
+  .crud-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .crud-form-group.full-width {
+    grid-column: auto;
+  }
+
+  .crud-modal {
+    max-height: 95vh;
+  }
+
+}
