@@ -1,24 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "python manage.py collectstatic --noinput",
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "staticfiles/**",
+      "maxDuration": 60
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/api/index"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
-      ]
     }
   ]
 }
